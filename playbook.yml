@@ -30,5 +30,6 @@
       template: src=nginx.conf dest=/etc/nginx/sites-available/default
     
     - name: restart nginx
-      service: nginx
-      state: restarted
+      service: 
+        name: nginx
+        state: restarted

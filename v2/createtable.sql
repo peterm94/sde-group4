@@ -1,4 +1,4 @@
-Create database if not exists Assignmentdb1;
+Create database if not exists Assignmentdb;
 
 go
 
@@ -24,3 +24,7 @@ go
 
 Update Orders
 set Amount=noOftyres*110;
+
+go
+
+GRANT ALL PRIVILEGES ON *.* TO 'abc'@'localhost' IDENTIFIED BY 'abc';

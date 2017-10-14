@@ -6,7 +6,7 @@
 
 <body>
 <form  action="Welcome.php" method="post">
-FisrtName: <input type="text" name="firstname" value="<?php echo $fname;?>"><br/><br/>
+FirstName: <input type="text" name="firstname" value="<?php echo $fname;?>"><br/><br/>
 LastName:  <input type="text" name="lastname" value="<?php echo $lname;?>"><br/><br/>
 Number of Tyres: <input type="number" name="tyres" value="<?php echo $tyre;?>"><br/><br/>
 <input type="submit" name="Calculate"><br/>
@@ -14,7 +14,7 @@ Number of Tyres: <input type="number" name="tyres" value="<?php echo $tyre;?>"><
     <?php
     $servername = "localhost";
     $user="abc";
-    $password="abc ";
+    $password="abc";
     $dbname="Assignmentdb";
 
 

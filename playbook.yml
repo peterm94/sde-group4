@@ -26,4 +26,7 @@
     - name: init database
       shell: mysql Assignmentdb1 < /srv/checkout/v2/createtable.sql
 
-    - name:
+    - name: configure nginx
+      template: src=srv/checkout/nginx.conf dest=/etc/nginx/sites-available/default
+      notify:
+        restart nginx

@@ -39,14 +39,9 @@ Number of Tyres: <input type="number" name="tyres" value="<?php echo $tyre;?>"><
 
     // "s" means the database expects a string "i" means integer
     $stmt->bind_param("ssii", $unsafe_firstname,$unsafe_lasstname,$unsafe_nooftyres,$unsafe_amount);
-
     $stmt->execute();
-
     $stmt->close();
-
-    $mysqli->close();
-
-     $conn->close();
+    $conn->close();
     ?>
     </form>
 </body>

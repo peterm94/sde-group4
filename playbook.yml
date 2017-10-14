@@ -6,6 +6,9 @@
       apt:
         name: mysql-server
         state: present
+      apt:
+        name: php-mysql
+        state: present
     - name: install php
       apt:
         name: php
@@ -14,17 +17,13 @@
       apt:
         name: nginx
         state: present
-    - name: install composer
-      apt:
-        name: composer
-        state: present
 
     - name: import git
       git:
         repo: 'https://github.com/peterm94/sde-group4.git'
         dest: /srv/checkout
     - name: init database
-      shell: mysql Assignmentdb1 < /srv/checkout/v2/createtable.sql
+      shell: mysql Assignmentdb < /srv/checkout/v2/createtable.sql
 
     - name: configure nginx
       template: src=nginx.conf dest=/etc/nginx/sites-available/default

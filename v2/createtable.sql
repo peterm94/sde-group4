@@ -1,8 +1,12 @@
-Craete database if not exists Assignmentdb1;
+Create database if not exists Assignmentdb1;
 
 go
 
-Create table Orders if not exists(
+Drop table if exists Orders;
+
+go
+
+Create table Orders(
 firstname varchar(50) not null primary key,
 lastname varchar(50) not null,
 noOftyres int not null);
@@ -14,7 +18,7 @@ values('john','smith',2);
 
 go
 
-alter table orders add Amount numeric null;
+alter table Orders add Amount numeric null;
 
 go
 

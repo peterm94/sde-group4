@@ -1,4 +1,8 @@
-Create table Orders(
+Craete database if not exists Assignmentdb1;
+
+go
+
+Create table Orders if not exists(
 firstname varchar(50) not null primary key,
 lastname varchar(50) not null,
 noOftyres int not null);

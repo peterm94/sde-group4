@@ -38,8 +38,14 @@ Number of Tyres: <input type="number" name="tyres" value="<?php echo $tyre;?>"><
     // TODO check that $stmt creation succeeded
 
     // "s" means the database expects a string "i" means integer
-    $stmt->bind_param("ssii", $unsafe_firstname,$unsafe_lasstname,$unsafe_nooftyres,$unsafe_amount);
-    $stmt->execute();
+    $stmt->bind_param("ssii", $unsafe_firstname, $unsafe_lasstname, $unsafe_nooftyres, $unsafe_amount);
+	$result=$stmt->execute();
+	if($result) {
+	    echo "Successfully updated!";
+	} else {
+    	    echo "Failed to update!";
+	}
+
     $stmt->close();
     $conn->close();
     ?>

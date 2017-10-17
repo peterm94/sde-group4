@@ -2,29 +2,17 @@
 - hosts: all
   sudo: true
   vars:
-    src_root: /var/www/sde/v2
+    document_root: /vagrant
+    src_root: /vagrant/v2
   tasks:
     - name: install required packages
       apt: name={{ item }} update_cache=yes state=latest
       with_items:
-        - git
         - apache2
         - php5
-        - php5-cli
-        - php5-curl
-        - php5-fpm
         - php5-mysql
         - mysql-server
         - python-mysqldb
-
-    - name: ensure php5-fpm cgi.fix_pathinfo=0
-      lineinfile: dest=/etc/php5/fpm/php.ini regexp='^(.*)cgi.fix_pathinfo=' line=cgi.fix_pathinfo=0
-      notify:
-        - restart php5-fpm
-        - restart nginx
-
-    - name: create /var/www/ directory
-      file: dest=/var/www/ state=directory owner=www-data group=www-data mode=0777
 
     # DB setup
     - name: Create database
@@ -38,6 +26,9 @@
         password: abc
         priv: '*.*:ALL'
         state: present
+
+    - name: init database
+      shell: mysql Assignmentdb < /var/www/sde/v2/createtable.sql
         
     # Apache setup
     - name: copy new virtual host
@@ -59,19 +50,6 @@
         state=link
       notify:
         - reload apache
-
-    # Web files
-    - name: import git
-      git:
-        repo: 'https://github.com/peterm94/sde-group4.git'
-        dest: /var/www/sde
-
-    - name: init database
-      shell: mysql Assignmentdb < /var/www/sde/v2/createtable.sql
-
-  handlers:
-    - name: restart php5-fpm
-      service: name=php5-fpm state=restarted
 
     - name: reload apache
       service: name=apache2 state=reloaded

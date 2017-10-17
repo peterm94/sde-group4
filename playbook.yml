@@ -19,6 +19,11 @@
       mysql_db:
         name: Assignmentdb
         state: present
+        
+    - name: Upgrade database
+      mysql_db:
+        state: import
+        target: /vagrant/v2/createtable.sql
 
     - name: Create DB user
       mysql_user: 

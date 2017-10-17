@@ -1,24 +1,7 @@
-Drop table if exists Orders;
-
-go
-
-Create table Orders(
+CREATE TABLE IF NOT EXISTS orders(
 firstname varchar(50) not null primary key,
 lastname varchar(50) not null,
 noOftyres int not null);
 
-go
-
-insert into Orders(firstname, lastname, noOfTyres)
-values('john','smith',2);
-
-go
-
-alter table Orders add Amount numeric null;
-
-go
-
-Update Orders
-set Amount=noOftyres*110;
-
-go
+alter table orders add Amount INT(11) null;
+Update orders set Amount=noOftyres*110;

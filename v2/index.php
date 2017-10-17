@@ -33,7 +33,7 @@ Number of Tyres: <input type="number" name="tyres"><br/><br/>
         $unsafe_nooftyres = $_POST['$tyres'];
         $unsafe_amount= $unsafe_nooftyres * 110;
 
-        $stmt = $conn->prepare("INSERT INTO Orders (firstname, lastname, noOftyres, Amount) VALUES (?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO orders (firstname, lastname, noOftyres, Amount) VALUES (?, ?, ?, ?)");
 
         // "s" means the database expects a string "i" means integer
         $stmt->bind_param("ssii", $unsafe_firstname, $unsafe_lastname, $unsafe_nooftyres, $unsafe_amount);

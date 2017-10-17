@@ -2,28 +2,27 @@
 - hosts: all
   sudo: true
   tasks:
-  
-    # Mysql
-    - name: install mysql-server
-      apt:
-        name: mysql-server
-        state: present
-        
-    - name: install python-mysqldb
-      apt:
-        name: python-mysqldb
-        state: present
+    - name: install required packages
+      apt: name={{ item }} update_cache=yes state=latest
+      with_items:
+        - git
+        - nginx
+        - php5
+        - php5-cli
+        - php5-curl
+        - php5-fpm
+        - php5-mysql
+        - mysql-server
+        - python-mysqldb
 
-    # PHP
-    - name: install php
-      apt:
-        name: php5
-        state: present
-        
-    - name: install php-mysql
-      apt:
-        name: php5-mysql
-        state: present
+    - name: ensure php5-fpm cgi.fix_pathinfo=0
+      lineinfile: dest=/etc/php5/fpm/php.ini regexp='^(.*)cgi.fix_pathinfo=' line=cgi.fix_pathinfo=0
+      notify:
+        - restart php5-fpm
+        - restart nginx
+
+    - name: create /var/www/ directory
+      file: dest=/var/www/ state=directory owner=www-data group=www-data mode=0700
 
     # DB setup
     - name: Create database
@@ -37,31 +36,25 @@
         password: abc
         priv: '*.*:ALL'
         state: present
-        
-    - name: Set up table
-        mysql_user:
-            name: Assignmentdb
-            state: import
-            target: /vagrant/v2/createtable.sql
-
-    # Nginx server
-    - name: install nginx
-      apt:
-        name: nginx
-        state: present
 
     # Web files
     - name: import git
       git:
         repo: 'https://github.com/peterm94/sde-group4.git'
-        dest: /srv/checkout
+        dest: /var/www/sde
+
     - name: init database
-      shell: mysql Assignmentdb < /srv/checkout/v2/createtable.sql
+      shell: mysql Assignmentdb < /var/www/sde/v2/createtable.sql
 
     - name: configure nginx
       template: src=nginx.conf dest=/etc/nginx/sites-available/default
-    
+      notify:
+        - restart php5-fpm
+        - restart nginx
+
+  handlers:
+    - name: restart php5-fpm
+      service: name=php5-fpm state=restarted
+
     - name: restart nginx
-      service: 
-        name: nginx
-        state: restarted
+      service: name=nginx state=restarted

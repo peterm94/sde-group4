@@ -23,6 +23,7 @@
     - name: Upgrade database
       mysql_db:
         state: import
+        name: Assignmentdb
         target: /vagrant/v2/createtable.sql
 
     - name: Create DB user
@@ -31,9 +32,6 @@
         password: abc
         priv: '*.*:ALL'
         state: present
-
-    - name: init database
-      shell: mysql Assignmentdb < /vagrant/v2/createtable.sql
         
     # Apache setup
     - name: copy new virtual host

@@ -5,11 +5,11 @@
 </head>
 
 <body>
-<form  action="Welcome.php" method="post">
+<form method="post">
 FirstName: <input type="text" name="firstname"><br/><br/>
 LastName:  <input type="text" name="lastname"><br/><br/>
 Number of Tyres: <input type="number" name="tyres"><br/><br/>
-<input type="submit" name="Calculate"><br/>
+<input type="submit" name="Calculate" value="Submit"><br/>
     
     <?php
     if (isset($_POST['Calculate'])) {

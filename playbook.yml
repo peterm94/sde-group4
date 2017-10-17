@@ -23,7 +23,7 @@
         
     - name: Restore database
       mysql_db:
-        name: "{{ database_name }}"
+        name: "{{ db_name }}"
         state: import
         target: /vagrant/dump.sql       
 
@@ -43,7 +43,7 @@
     # Apache setup
     - name: copy new virtual host
       template: 
-       src=templates/virtual-hosts.conf.j2 
+       src=virtual-hosts.conf.j2 
        dest=/etc/apache2/sites-available/vagrant.conf
     
     - name: remove default virtual host

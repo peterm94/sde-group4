@@ -6,6 +6,7 @@
       apt:
         name: mysql-server
         state: present
+    - name: install php-mysql
       apt:
         name: php-mysql
         state: present

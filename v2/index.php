@@ -1,4 +1,3 @@
-
 <html>
 <head>
 <title> Bob's Auto Parts</title>
@@ -18,7 +17,6 @@ Number of Tyres: <input type="number" name="tyres"><br/><br/>
         $password="abc";
         $dbname="Assignmentdb";
 
-
         // Create connection
         $conn = new mysqli($servername, $user, $password, $dbname);
 
@@ -28,25 +26,26 @@ Number of Tyres: <input type="number" name="tyres"><br/><br/>
         }
         echo "Connected successfully";
 
-        $unsafe_firstname = $_POST['$firstname'];
-        $unsafe_lastname = $_POST['$lastname'];
-        $unsafe_nooftyres = $_POST['$tyres'];
+        $unsafe_firstname = $_POST['firstname'];
+        $unsafe_lastname = $_POST['lastname'];
+        $unsafe_nooftyres = $_POST['tyres'];
         $unsafe_amount= $unsafe_nooftyres * 110;
 
-        $stmt = $conn->prepare("INSERT INTO orders (firstname, lastname, noOftyres, Amount) VALUES (?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO orders (firstname, lastname, noOftyres, amount) VALUES (?, ?, ?, ?)");
 
         // "s" means the database expects a string "i" means integer
         $stmt->bind_param("ssii", $unsafe_firstname, $unsafe_lastname, $unsafe_nooftyres, $unsafe_amount);
-	$result = $stmt->execute();
 
-	if($result) {
-	    echo "Successfully updated!";
-	} else {
-    	    echo "Failed to update!";
-	}
+		$result = $stmt->execute();
 
-        $stmt->close();
-        $conn->close();
+		if($result) {
+			echo "Successfully updated!";
+		} else {
+			echo "Failed to update!";
+		}
+
+			$stmt->close();
+			$conn->close();
     }
     ?>
     </form>

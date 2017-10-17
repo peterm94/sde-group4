@@ -1,12 +1,14 @@
 ---
 - hosts: all
   sudo: true
+  vars:
+    src_root: /var/www/sde/v2
   tasks:
     - name: install required packages
       apt: name={{ item }} update_cache=yes state=latest
       with_items:
         - git
-        - nginx
+        - apache2
         - php5
         - php5-cli
         - php5-curl
@@ -22,7 +24,7 @@
         - restart nginx
 
     - name: create /var/www/ directory
-      file: dest=/var/www/ state=directory owner=www-data group=www-data mode=0700
+      file: dest=/var/www/ state=directory owner=www-data group=www-data mode=0777
 
     # DB setup
     - name: Create database
@@ -36,6 +38,27 @@
         password: abc
         priv: '*.*:ALL'
         state: present
+        
+    # Apache setup
+    - name: copy new virtual host
+      template: 
+       src=virtual-hosts.conf.j2 
+       dest=/etc/apache2/sites-available/vagrant.conf
+    
+    - name: remove default virtual host
+      file:
+        path=/etc/apache2/sites-enabled/000-default.conf
+        state=absent
+      notify:
+        - reload apache
+        
+    - name: enable new vagrant virtual host
+      file:
+        src=/etc/apache2/sites-available/vagrant.conf
+        dest=/etc/apache2/sites-enabled/vagrant.conf
+        state=link
+      notify:
+        - reload apache
 
     # Web files
     - name: import git
@@ -46,15 +69,9 @@
     - name: init database
       shell: mysql Assignmentdb < /var/www/sde/v2/createtable.sql
 
-    - name: configure nginx
-      template: src=nginx.conf dest=/etc/nginx/sites-available/default
-      notify:
-        - restart php5-fpm
-        - restart nginx
-
   handlers:
     - name: restart php5-fpm
       service: name=php5-fpm state=restarted
 
-    - name: restart nginx
-      service: name=nginx state=restarted
+    - name: reload apache
+      service: name=apache2 state=reloaded

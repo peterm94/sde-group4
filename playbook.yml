@@ -2,23 +2,55 @@
 - hosts: all
   sudo: true
   tasks:
+  
+    # Mysql
     - name: install mysql-server
       apt:
         name: mysql-server
         state: present
-    - name: install php-mysql
+        
+    - name: install python-mysqldb
       apt:
-        name: php-mysql
+        name: python-mysqldb
         state: present
+
+    # PHP
     - name: install php
       apt:
-        name: php
+        name: php5
         state: present
+        
+    - name: install php-mysql
+      apt:
+        name: php5-mysql
+        state: present
+
+    # DB setup
+    - name: Create database
+      mysql_db:
+        name: Assignmentdb
+        state: present
+
+    - name: Create DB user
+      mysql_user: 
+        name: abc
+        password: abc
+        priv: '*.*:ALL'
+        state: present
+        
+    - name: Set up table
+        mysql_user:
+            name: Assignmentdb
+            state: import
+            target: /vagrant/v2/createtable.sql
+
+    # Nginx server
     - name: install nginx
       apt:
         name: nginx
         state: present
 
+    # Web files
     - name: import git
       git:
         repo: 'https://github.com/peterm94/sde-group4.git'

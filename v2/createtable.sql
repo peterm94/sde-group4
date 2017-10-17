@@ -1,7 +1,3 @@
-Create database if not exists Assignmentdb;
-
-go
-
 Drop table if exists Orders;
 
 go
@@ -13,7 +9,7 @@ noOftyres int not null);
 
 go
 
-insert into Orders(firstname, lastname,noOfTyres)
+insert into Orders(firstname, lastname, noOfTyres)
 values('john','smith',2);
 
 go
@@ -26,5 +22,3 @@ Update Orders
 set Amount=noOftyres*110;
 
 go
-
-GRANT ALL PRIVILEGES ON *.* TO 'abc'@'localhost' IDENTIFIED BY 'abc';
